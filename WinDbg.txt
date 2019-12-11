@@ -1,0 +1,44 @@
+SetUp:
+ -- load the dump file
+ -- add the symbol server to the sympath: .sympath+ SRV*D:\Dump\symbols*http://msdl.microsoft.com/download/symbols
+ -- load app symbols: .sympath+ C:\SchneiderElectricData\ADMS\bin
+ -- load exe: .exepath+ C:\SchneiderElectricData\ADMS\bin
+ -- load mscordacwks.dll clr.dll sos.dll (must match version with the dump file): .load <path to the dll>
+ 
+.load C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscordacwks.dll
+.load C:\Windows\Microsoft.NET\Framework64\v4.0.30319\clr.dll
+.load C:\Windows\Microsoft.NET\Framework64\v4.0.30319\sos.dll
+
+load sosEx.dll (download it if u dont have it)
+
+CLR call stack:
+ -- ~*e !CLRStack
+
+trace handles:
+ -- attach to the process
+ -- load symbols for the process
+ -- load sos.dll
+ -- enable htrace: !htrace -enable
+ -- Debug->Go and wait for handle creation
+ -- Debug->Break
+ -- view the diff: !htrace -diff
+ -- to get the method from address: !u <address>
+
+analyze heap dump:
+ -- !analyze -v
+
+~<TreadId> to analyze specific treadb
+
+~<TreadId>e !clrstack to get call stack on specific tread
+
+***************
+!dlk to find deadlock   (this command wont be available if sosex.dll is not loaded )
+************
+
+~*e !dlk to see if there is dead lock on any thread
+
+~<TreadId>e !dlk to see if there is deadlock on specific tread
+
+~*kvn or kb  to finde threads waiting on critical section
+
+
